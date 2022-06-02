@@ -4,8 +4,8 @@ namespace BuisnessLogicLayer.Services
 {
     public interface INewShift
     {
-        public void ShiftStarts(int id);
-        public void ShiftEnds(int id);        
+        public string ShiftStarts(Employee item);
+        public string ShiftEnds(Employee item);        
         public Shift GetShift(int id);
     }
 }

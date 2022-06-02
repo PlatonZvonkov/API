@@ -14,6 +14,10 @@ namespace DataAccessLayer
         {
             this.context = context;
         }
+        /**
+        * I added only one generic method "AddEmployeeAsync" just for demonstration, its easier and faster to hardcode others
+        * Names of models end with DAO (data access object) for convinience to distinct them from modelson other layer
+        */
         #region EmployeeMethods
         public async Task<T> AddEmployeeAsync<T>(T entity) where T : class
         {
@@ -27,7 +31,7 @@ namespace DataAccessLayer
             return result;
         }
         public EmployeeDAO UpdateEmployee(EmployeeDAO entity)
-        {
+        {           
             context.Entry(entity).State = EntityState.Modified;
             context.SaveChanges();
             var result = context.Employees.Find(entity.Id);
@@ -37,12 +41,15 @@ namespace DataAccessLayer
         {            
             context.Employees.Remove(entity);
             context.SaveChangesAsync(); 
-        }
-       
+        }       
 
         public EmployeeDAO GetEmployee(int id)
         {
             var found = context.Employees.Find(id);
+            if (found != null)
+            {
+                  context.Entry(found).State = EntityState.Detached;
+            }          
             return found;
         }
 

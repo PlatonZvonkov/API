@@ -29,7 +29,12 @@ namespace HealthyHole.Controllers
                 return new BadRequestObjectResult(
                     new { StatusCode = 400, Message = "ACCESS DENIED!!!" });
             }
-            newShift.ShiftStarts(id);
+            var message = newShift.ShiftStarts(employee);
+            if (message != null)
+            {
+                return Ok($"ACCESS GRANTED! Welcome {employee.Name} {employee.Surname}!" +
+                    $"Warning! {message}");
+            }
             return Ok($"ACCESS GRANTED! Welcome {employee.Name} {employee.Surname}!");
         }
         /// <summary>
@@ -51,7 +56,12 @@ namespace HealthyHole.Controllers
                 return new BadRequestObjectResult(
                     new { StatusCode = 400, Message = "ACCESS DENIED! YOU HAVE NOT CHECKED IN YET!" });
             }
-            newShift.ShiftEnds(id);
+            var message = newShift.ShiftEnds(employee);
+            if (message != null)
+            {
+                return Ok($"ACCESS GRANTED!" +
+                    $"Warning! {message}");
+            }
             return Ok($"ACCESS GRANTED! Have a great evening {employee.Name}!");
         }
     }

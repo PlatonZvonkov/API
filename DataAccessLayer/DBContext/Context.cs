@@ -10,6 +10,8 @@ namespace DataAccessLayer.DBContext
         public DbSet<ShiftDAO> Shifts { get; set; }
         public Context(DbContextOptions<Context> options) : base(options){}
 
+        public Context(){}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EmployeeDAO>().HasData(new EmployeeDAO[] {

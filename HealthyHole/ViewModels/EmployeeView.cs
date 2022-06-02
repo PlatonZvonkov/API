@@ -10,7 +10,6 @@ namespace HealthyHole.ViewModels
         public string Name { get; set; }     
         public string Fatherhood { get; set; }     
         public string Title { get; set; }
-        public int Strikes { get; set; }
-        public List<Shift> Shifts { get; set; }
+        public int Strikes { get; set; }        
     }
 }

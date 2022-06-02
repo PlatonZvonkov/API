@@ -19,13 +19,16 @@ namespace HealthyHole.Controllers
         private readonly IResources resources;
         IMapper _mapper;
         MapperConfiguration config;
+        /**
+        * Automapper also allows us to ignore some of the fields when mapped in one of the direction if you want to hide some info
+        */
         public HRDepartmentController(IResources resources)
         {
             this.resources = resources;
             config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Employee, EmployeeView>();
-                cfg.CreateMap<EmployeeView, Employee>();
+                cfg.CreateMap<EmployeeView, Employee>().ForMember(x=>x.Shifts, opt => opt.Ignore());
             });
             _mapper = new Mapper(config);
         }
@@ -48,7 +51,7 @@ namespace HealthyHole.Controllers
 
         ///<summary>
         ///   Swagger making field on UI *required only
-        ///   to use null parameter and to show all employees just use browser request /api/HRDepartment/getEmployees/
+        ///   to use null parameter and to show all employees just use browser request /api/HRDepartment/getEmployees/.
         ///<summary>
         [HttpGet, Route("getEmployees/{title?}")]
         public IActionResult GetAllEmployees(string? title)
