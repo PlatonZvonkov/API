@@ -48,7 +48,7 @@ namespace HealthyHole.Controllers
 
         ///<summary>
         ///   Swagger making field on UI *required only
-        ///   to use null parameter and to show all employees just use browser request /api/HRDepartment/getEmployees/.
+        ///   to use null parameter and to show all employees just use browser request /api/HRDepartment/getEmployees/
         ///<summary>
         [HttpGet, Route("getEmployees/{title?}")]
         public IActionResult GetAllEmployees(string? title)
