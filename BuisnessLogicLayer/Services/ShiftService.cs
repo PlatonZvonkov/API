@@ -3,6 +3,8 @@ using BuisnessLogicLayer.Models;
 using DataAccessLayer;
 using DataAccessLayer.Models;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BuisnessLogicLayer.Services
 {
@@ -25,7 +27,7 @@ namespace BuisnessLogicLayer.Services
                 cfg.CreateMap<Employee, EmployeeDAO>();
                 cfg.CreateMap<EmployeeDAO, Employee>();
 
-                cfg.CreateMap<Shift, ShiftDAO>();
+                cfg.CreateMap<Shift, ShiftDAO>().ForMember(x=>x.Employee, opt => opt.Ignore());
                 cfg.CreateMap<ShiftDAO, Shift>();
             }
             );
@@ -82,6 +84,12 @@ namespace BuisnessLogicLayer.Services
         public Shift GetShift(int id)
         {
             return _mapper.Map<Shift>(shiftAccess.GetShift(id));
+        }
+
+        public async Task<ICollection<Shift>> GetAllShiftsAsync(int id)
+        {
+            var result = await shiftAccess.GetAllShiftsAsync(id);            
+            return _mapper.Map<ICollection<ShiftDAO>,ICollection<Shift>>(result);;
         }
         #endregion
     }

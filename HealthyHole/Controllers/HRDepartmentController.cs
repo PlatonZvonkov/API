@@ -16,18 +16,23 @@ namespace HealthyHole.Controllers
     public class HRDepartmentController : ControllerBase
     {
         private readonly IHumanResources resources;
+        private readonly IShift shift;
         IMapper _mapper;
         MapperConfiguration config;
         /**
         * Automapper also allows us to ignore some of the fields when mapped in one of the direction if you want to hide some info
         */
-        public HRDepartmentController(IHumanResources resources)
+        public HRDepartmentController(IHumanResources resources,IShift shift)
         {
             this.resources = resources;
+            this.shift = shift;
             config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Employee, EmployeeView>();
-                cfg.CreateMap<EmployeeView, Employee>().ForMember(x=>x.Shifts, opt => opt.Ignore());
+                cfg.CreateMap<EmployeeView, Employee>();
+
+                cfg.CreateMap<Employee, EmployeeRequest>();
+                cfg.CreateMap<EmployeeRequest, Employee>().ForMember(x => x.Shifts, opt => opt.Ignore()).ForMember(x => x.Strikes, opt => opt.Ignore());
             });
             _mapper = new Mapper(config);
         }
@@ -53,13 +58,15 @@ namespace HealthyHole.Controllers
         ///   Swagger making field on UI *required only
         ///   to use null parameter and to show all employees just use browser request /api/HRDepartment/getEmployees/.
         ///<summary>
+        ///<param name="title"></param>   
         [HttpGet, Route("getEmployees/{title?}")]
         public async Task<IActionResult> GetAllEmployees(string? title)
         {
             var existingTitles = Enum.GetNames(typeof(TitlesEnum));
             if (existingTitles.Any(x => x == title) || title == null)
             {
-                var result = await resources.GetEmployeesAsync(title);
+                var employees = await resources.GetEmployeesAsync(title);
+                var result = _mapper.Map<ICollection<Employee>, ICollection<EmployeeRequest>>(employees);
                 return Ok(new { StatusCode = 200, result });
             }
             return new BadRequestObjectResult(
@@ -74,7 +81,7 @@ namespace HealthyHole.Controllers
         {
             var result = await resources.GetAllTitlesAsync();
             return Ok(new { StatusCode = 200, result});
-        }
+        }        
 
         /// <summary>
         /// Add single new Employee
@@ -82,7 +89,7 @@ namespace HealthyHole.Controllers
         /// </summary>
         /// <param name="model"></param>   
         [HttpPost,Route("addEmployee")]
-        public async Task<IActionResult> PostAsync([FromBody] EmployeeView model)
+        public async Task<IActionResult> PostAsync([FromBody] EmployeeRequest model)
         {
             if (model.Name == null || model.Surname == null || model.Title == null)
             {
@@ -91,7 +98,7 @@ namespace HealthyHole.Controllers
             }                
             var employee = _mapper.Map<Employee>(model);
             var added = await resources.AddEmployeeAsync(employee);
-            var result = _mapper.Map<EmployeeView>(added);
+            var result = _mapper.Map<EmployeeRequest>(added);
 
             return Ok(new { StatusCode = 200, result});
         }

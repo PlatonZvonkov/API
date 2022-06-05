@@ -37,7 +37,7 @@ namespace DataAccessLayer
         {
             var result = await context.Shifts.Where(x => x.EmployeeId == id).ToListAsync();
             return result;
-        }
+        }        
         #endregion
     }
 }

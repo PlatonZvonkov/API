@@ -60,7 +60,7 @@ namespace DataAccessLayer
         }
         public IEnumerable<EmployeeDAO> GetEmployees(string title)
         {
-            IQueryable<EmployeeDAO> group;            
+            IQueryable<EmployeeDAO> group;
             group = context.Employees.Where(x=>x.Title==title).Select(grp=>grp);
             var result = group.AsEnumerable();
             return result;

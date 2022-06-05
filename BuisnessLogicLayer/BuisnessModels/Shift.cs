@@ -8,8 +8,7 @@ namespace BuisnessLogicLayer.Models
         public DateTime ShiftStarts { get; set; }        
         public DateTime? ShiftEnds { get; set; }
         public int? Hours { get; set; }
-        public int EmployeeId { get; set; }        
-        public Employee Employee { get; set; }
+        public int EmployeeId { get; set; } 
 
     }
 }
