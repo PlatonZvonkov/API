@@ -50,8 +50,14 @@ namespace BuisnessLogicLayer.Services
 
         public Employee GetEmployee(int id)
         {
+            var employee = dataAccess.GetEmployee(id);                    
+            var result = _mapper.Map<Employee>(employee);
+            return result;
+        }
+        public Employee GetEmployeeWithShifts(int id)
+        {
             var employee = dataAccess.GetEmployee(id);
-            var shiftsById = shift.GetAllShiftsAsync(id).Result;            
+            var shiftsById = shift.GetAllShiftsAsync(id).Result;
             var result = _mapper.Map<Employee>(employee);
             result.Shifts = _mapper.Map<List<ShiftDAO>, List<Shift>>(shiftsById.ToList());
             return result;

@@ -9,6 +9,7 @@ namespace BuisnessLogicLayer.Services
         Task<Employee> AddEmployeeAsync(Employee item);
         void RemoveEmployee(int id);
         Employee GetEmployee(int id);
+        Employee GetEmployeeWithShifts(int id);
         Task<List<string>> GetAllTitlesAsync();
         Employee UpdateEmployee(Employee item);
         Task<ICollection<Employee>> GetEmployeesAsync(string title);

@@ -44,7 +44,7 @@ namespace HealthyHole.Controllers
         [HttpGet, Route("getEmployee/{id}")]
         public IActionResult Get(int id)
         {           
-            var employee = resources.GetEmployee(id);
+            var employee = resources.GetEmployeeWithShifts(id);
             if (employee == null)
             {
                 return new NotFoundObjectResult(
