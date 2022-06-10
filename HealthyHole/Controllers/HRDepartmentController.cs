@@ -55,7 +55,7 @@ namespace HealthyHole.Controllers
                     new { Message = "There is no employee with this id!" });
             }
             var result = _mapper.Map<EmployeeView>(employee);
-            return Ok(new { result});
+            return Ok(result);
         }
 
         ///<summary>
@@ -71,7 +71,7 @@ namespace HealthyHole.Controllers
             {
                 var employees = await resources.GetEmployeesAsync(title);
                 var result = _mapper.Map<ICollection<Employee>, ICollection<EmployeeRequest>>(employees);
-                return Ok(new { result });
+                return Ok(result );
             }
             return BadRequest(
                  new { Message = "No such Title exists!" });
@@ -84,7 +84,7 @@ namespace HealthyHole.Controllers
         public async Task<IActionResult> GetAllTitlesAsync()
         {
             var result = await resources.GetAllTitlesAsync();
-            return Ok(new { result});
+            return Ok(result);
         }        
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace HealthyHole.Controllers
             var added = await resources.AddEmployeeAsync(employee);
             var result = _mapper.Map<EmployeeRequest>(added);
 
-            return Ok(new { result});
+            return Ok(result);
         }
         /// <summary>
         /// @shifts fiedl can be discarded
@@ -127,7 +127,7 @@ namespace HealthyHole.Controllers
             var employee = _mapper.Map<Employee>(model);
             var updatedEmployee = resources.UpdateEmployee(employee);
             var result = _mapper.Map<EmployeeView>(updatedEmployee);
-            return Ok(new { result});
+            return Ok(result);
         }
         
         /// <summary>

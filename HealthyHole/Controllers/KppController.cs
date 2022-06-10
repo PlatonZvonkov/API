@@ -23,6 +23,11 @@ namespace HealthyHole.Controllers
         [HttpGet, Route("ShiftStarts/{id}")]
         public IActionResult ShiftStarts(int id)
         {
+            if (id<0)
+            {
+                return BadRequest(
+                    new { Message = "ACCESS DENIED!!!" });
+            }
             var employee = _resources.GetEmployee(id);
             if (employee == null)
             {
@@ -46,6 +51,11 @@ namespace HealthyHole.Controllers
         [HttpGet, Route("ShiftEnds/{id}")]
         public IActionResult ShiftEnds(int id)
         {
+            if (id < 0)
+            {
+                return BadRequest(
+                    new { Message = "ACCESS DENIED!!!" });
+            }
             var employee = _resources.GetEmployee(id);
             if (employee == null)
             {
