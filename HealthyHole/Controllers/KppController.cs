@@ -20,7 +20,7 @@ namespace HealthyHole.Controllers
         /// Entrance at the Facility, grants access only to the initiated
         /// </summary>
         /// <param name="id"></param>
-        [HttpPost, Route("ShiftStarts")]
+        [HttpGet, Route("ShiftStarts/{id}")]
         public IActionResult ShiftStarts(int id)
         {
             var employee = _resources.GetEmployee(id);
@@ -43,7 +43,7 @@ namespace HealthyHole.Controllers
         /// Exit at the Facility, grants access only to those who worked their ass of
         /// </summary>
         /// <param name="id"></param>
-        [HttpPost, Route("ShiftEnds")]
+        [HttpGet, Route("ShiftEnds/{id}")]
         public IActionResult ShiftEnds(int id)
         {
             var employee = _resources.GetEmployee(id);

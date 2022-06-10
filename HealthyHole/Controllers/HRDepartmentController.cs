@@ -15,17 +15,16 @@ namespace HealthyHole.Controllers
     [ApiController]
     public class HRDepartmentController : ControllerBase
     {
-        private readonly IHumanResources resources;
-        private readonly IShift shift;
+        private readonly IHumanResources resources;       
         IMapper _mapper;
         MapperConfiguration config;
         /**
         * Automapper also allows us to ignore some of the fields when mapped in one of the direction if you want to hide some info
         */
-        public HRDepartmentController(IHumanResources resources,IShift shift)
+        public HRDepartmentController(IHumanResources resources)
         {
             this.resources = resources;
-            this.shift = shift;
+            
             config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Employee, EmployeeView>();
@@ -43,7 +42,12 @@ namespace HealthyHole.Controllers
         /// <param name="id"></param>        
         [HttpGet, Route("getEmployee/{id}")]
         public IActionResult Get(int id)
-        {           
+        {
+            if (id<0)
+            {
+                return new BadRequestObjectResult(
+                    new { StatusCode = 400, Message = "There is no employee with this id!" });
+            }
             var employee = resources.GetEmployeeWithShifts(id);
             if (employee == null)
             {
@@ -109,6 +113,11 @@ namespace HealthyHole.Controllers
         [HttpPost, Route("updateEmployee")]
         public IActionResult Update([FromBody] EmployeeView model)
         {
+            if (model.Id < 0)
+            {
+                return new BadRequestObjectResult(
+                    new { StatusCode = 400, Message = "There is no employee with this id!" });
+            }
             var product = resources.GetEmployee(model.Id);
             if (product == null)
             {
