@@ -45,17 +45,17 @@ namespace HealthyHole.Controllers
         {
             if (id<0)
             {
-                return new BadRequestObjectResult(
-                    new { StatusCode = 400, Message = "There is no employee with this id!" });
+                return BadRequest(
+                    new { Message = "There is no employee with this id!" });
             }
             var employee = resources.GetEmployeeWithShifts(id);
             if (employee == null)
             {
-                return new NotFoundObjectResult(
-                    new { StatusCode = 400, Message = "There is no employee with this id!" });
+                return BadRequest(
+                    new { Message = "There is no employee with this id!" });
             }
             var result = _mapper.Map<EmployeeView>(employee);
-            return Ok(new { StatusCode = 200, result});
+            return Ok(new { result});
         }
 
         ///<summary>
@@ -71,10 +71,10 @@ namespace HealthyHole.Controllers
             {
                 var employees = await resources.GetEmployeesAsync(title);
                 var result = _mapper.Map<ICollection<Employee>, ICollection<EmployeeRequest>>(employees);
-                return Ok(new { StatusCode = 200, result });
+                return Ok(new { result });
             }
-            return new BadRequestObjectResult(
-                 new { StatusCode = 400, Message = "No such Title exists!" });
+            return BadRequest(
+                 new { Message = "No such Title exists!" });
 
         }
         /// <summary>
@@ -84,7 +84,7 @@ namespace HealthyHole.Controllers
         public async Task<IActionResult> GetAllTitlesAsync()
         {
             var result = await resources.GetAllTitlesAsync();
-            return Ok(new { StatusCode = 200, result});
+            return Ok(new { result});
         }        
 
         /// <summary>
@@ -97,14 +97,14 @@ namespace HealthyHole.Controllers
         {
             if (model.Name == null || model.Surname == null || model.Title == null)
             {
-                return new BadRequestObjectResult(
-                    new { StatusCode = 400, Message = "Fill Required Fields!" });
+                return BadRequest(
+                    new { Message = "Fill Required Fields!" });
             }                
             var employee = _mapper.Map<Employee>(model);
             var added = await resources.AddEmployeeAsync(employee);
             var result = _mapper.Map<EmployeeRequest>(added);
 
-            return Ok(new { StatusCode = 200, result});
+            return Ok(new { result});
         }
         /// <summary>
         /// @shifts fiedl can be discarded
@@ -115,19 +115,19 @@ namespace HealthyHole.Controllers
         {
             if (model.Id < 0)
             {
-                return new BadRequestObjectResult(
-                    new { StatusCode = 400, Message = "There is no employee with this id!" });
+                return BadRequest(
+                    new { Message = "There is no employee with this id!" });
             }
             var product = resources.GetEmployee(model.Id);
             if (product == null)
             {
-                return new BadRequestObjectResult(
-                    new { StatusCode = 400, Message = "There is no employee with this id!" });
+                return BadRequest(
+                    new { Message = "There is no employee with this id!" });
             }
             var employee = _mapper.Map<Employee>(model);
             var updatedEmployee = resources.UpdateEmployee(employee);
             var result = _mapper.Map<EmployeeView>(updatedEmployee);
-            return Ok(new { StatusCode = 200, result});
+            return Ok(new { result});
         }
         
         /// <summary>
@@ -139,18 +139,18 @@ namespace HealthyHole.Controllers
         {
             if(id < 0 || id == default)
             {
-                return new BadRequestObjectResult(
-                    new { StatusCode = 400, Message = "There is no employee with this id!" }); ;
+                return BadRequest(
+                    new { Message = "There is no employee with this id!" }); ;
             }
             var employee =  resources.GetEmployee(id);
             if (employee == null)
             {
-                return new BadRequestObjectResult(
-                    new { StatusCode = 400, Message = "There is no employee with this id!" });
+                return BadRequest(
+                    new { Message = "There is no employee with this id!" });
             }            
             resources.RemoveEmployee(id);
 
-            return Ok(new { StatusCode = 200, Message = $"Successfully deleted user with id - {employee.Id}!" });            
+            return Ok(new { Message = $"Successfully deleted user with id - {employee.Id}!" });            
         }
 
     }
