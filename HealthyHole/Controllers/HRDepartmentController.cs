@@ -66,11 +66,11 @@ namespace HealthyHole.Controllers
         [HttpGet, Route("getEmployees/{title?}")]
         public async Task<IActionResult> GetAllEmployees(string? title)
         {
-            var existingTitles = Enum.GetNames(typeof(TitlesEnum));
+            string[] existingTitles = Enum.GetNames(typeof(TitlesEnum));
             if (existingTitles.Any(x => x == title) || title == null)
             {
-                var employees = await resources.GetEmployeesAsync(title);
-                var result = _mapper.Map<ICollection<Employee>, ICollection<EmployeeRequest>>(employees);
+                ICollection<Employee> employees = await resources.GetEmployeesAsync(title);
+                ICollection<EmployeeRequest> result = _mapper.Map<ICollection<Employee>, ICollection<EmployeeRequest>>(employees);
                 return Ok(result );
             }
             return BadRequest(
@@ -83,7 +83,7 @@ namespace HealthyHole.Controllers
         [HttpGet, Route("allTitles")]
         public async Task<IActionResult> GetAllTitlesAsync()
         {
-            var result = await resources.GetAllTitlesAsync();
+            List<string> result = await resources.GetAllTitlesAsync();
             return Ok(result);
         }        
 
@@ -100,9 +100,9 @@ namespace HealthyHole.Controllers
                 return BadRequest(
                     new { Message = "Fill Required Fields!" });
             }                
-            var employee = _mapper.Map<Employee>(model);
-            var added = await resources.AddEmployeeAsync(employee);
-            var result = _mapper.Map<EmployeeRequest>(added);
+            Employee employee = _mapper.Map<Employee>(model);
+            Employee added = await resources.AddEmployeeAsync(employee);
+            EmployeeRequest result = _mapper.Map<EmployeeRequest>(added);
 
             return Ok(result);
         }
@@ -118,15 +118,15 @@ namespace HealthyHole.Controllers
                 return BadRequest(
                     new { Message = "There is no employee with this id!" });
             }
-            var product = resources.GetEmployee(model.Id);
+            Employee product = resources.GetEmployee(model.Id);
             if (product == null)
             {
                 return BadRequest(
                     new { Message = "There is no employee with this id!" });
             }
-            var employee = _mapper.Map<Employee>(model);
-            var updatedEmployee = resources.UpdateEmployee(employee);
-            var result = _mapper.Map<EmployeeView>(updatedEmployee);
+            Employee employee = _mapper.Map<Employee>(model);
+            Employee updatedEmployee = resources.UpdateEmployee(employee);
+            EmployeeView result = _mapper.Map<EmployeeView>(updatedEmployee);
             return Ok(result);
         }
         
@@ -142,7 +142,7 @@ namespace HealthyHole.Controllers
                 return BadRequest(
                     new { Message = "There is no employee with this id!" }); ;
             }
-            var employee =  resources.GetEmployee(id);
+            Employee employee =  resources.GetEmployee(id);
             if (employee == null)
             {
                 return BadRequest(

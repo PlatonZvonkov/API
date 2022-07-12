@@ -62,7 +62,7 @@ namespace BuisnessLogicLayer.Services
         }
         public string ShiftEnds(Employee employee)
         {
-            var currentShift = shiftAccess.GetShift(employee.Id);
+            ShiftDAO currentShift = shiftAccess.GetShift(employee.Id);
             currentShift.ShiftEnds = DateTime.Now;
             currentShift.Hours = currentShift.ShiftEnds.Hour - currentShift.ShiftStarts.Hour;
             if (employee.Title == "Tester" && currentShift.Hours < 12)
@@ -88,7 +88,7 @@ namespace BuisnessLogicLayer.Services
 
         public async Task<ICollection<Shift>> GetAllShiftsAsync(int id)
         {
-            var result = await shiftAccess.GetAllShiftsAsync(id);            
+            ICollection<ShiftDAO> result = await shiftAccess.GetAllShiftsAsync(id);            
             return _mapper.Map<ICollection<ShiftDAO>,ICollection<Shift>>(result);;
         }
         #endregion

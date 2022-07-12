@@ -25,10 +25,10 @@ namespace HealthyHole
         {
             services.AddControllers();
             services.AddDbContext<SQLiteContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient(typeof(IHumanResources), typeof(HumanResourcesService));
-            services.AddTransient(typeof(IShift), typeof(ShiftService));
-            services.AddScoped(typeof(IDataAccess), typeof(DataAccess));
-            services.AddScoped(typeof(IShiftAccess), typeof(ShiftAccess));
+            services.AddTransient<IHumanResources,HumanResourcesService>();
+            services.AddTransient<IShift, ShiftService>();
+            services.AddScoped<IDataAccess, DataAccess>();
+            services.AddScoped<IShiftAccess, ShiftAccess>();
             
             services.AddSwaggerGen(c =>
             {

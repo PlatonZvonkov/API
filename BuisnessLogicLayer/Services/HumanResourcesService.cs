@@ -36,29 +36,29 @@ namespace BuisnessLogicLayer.Services
         }
         #region CRUD
         public async Task<Employee> AddEmployeeAsync(Employee item)
-        {            
-            var employeeDao = _mapper.Map<EmployeeDAO>(item);
-            var result = await dataAccess.AddEmployeeAsync(employeeDao);
+        {
+            EmployeeDAO employeeDao = _mapper.Map<EmployeeDAO>(item);
+            EmployeeDAO result = await dataAccess.AddEmployeeAsync(employeeDao);
             return _mapper.Map<Employee>(result);
         }
 
         public async Task<List<string>> GetAllTitlesAsync()
         {
-            var result = await dataAccess.GetAllTitlesAsync();
+            List<string> result = await dataAccess.GetAllTitlesAsync();
             return result;
         }
 
         public Employee GetEmployee(int id)
         {
-            var employee = dataAccess.GetEmployee(id);                    
-            var result = _mapper.Map<Employee>(employee);
+            EmployeeDAO employee = dataAccess.GetEmployee(id);
+            Employee result = _mapper.Map<Employee>(employee);
             return result;
         }
         public Employee GetEmployeeWithShifts(int id)
         {
-            var employee = dataAccess.GetEmployee(id);
-            var shiftsById = shift.GetAllShiftsAsync(id).Result;
-            var result = _mapper.Map<Employee>(employee);
+            EmployeeDAO employee = dataAccess.GetEmployee(id);
+            ICollection<ShiftDAO> shiftsById = shift.GetAllShiftsAsync(id).Result;
+            Employee result = _mapper.Map<Employee>(employee);
             result.Shifts = _mapper.Map<List<ShiftDAO>, List<Shift>>(shiftsById.ToList());
             return result;
         }
@@ -71,19 +71,19 @@ namespace BuisnessLogicLayer.Services
                 option1 = dataAccess.GetEmployees(title);
                 return (ICollection<Employee>)_mapper.Map<IEnumerable<EmployeeDAO>,IEnumerable<Employee>>(option1);
             }
-            var option2 = await dataAccess.GetEmployeesAsync();
+            ICollection<EmployeeDAO> option2 = await dataAccess.GetEmployeesAsync();
             return _mapper.Map<ICollection<EmployeeDAO>,ICollection<Employee>>(option2);
         }
 
         public void RemoveEmployee(int id)
         {
-            var employee = dataAccess.GetEmployee(id);            
+            EmployeeDAO employee = dataAccess.GetEmployee(id);            
             dataAccess.DeleteEmployee(employee);
         }
         
         public Employee UpdateEmployee(Employee item)
         {           
-            var result =  dataAccess.UpdateEmployee(_mapper.Map<EmployeeDAO>(item));
+            EmployeeDAO result =  dataAccess.UpdateEmployee(_mapper.Map<EmployeeDAO>(item));
             return _mapper.Map<Employee>(result);
         }
         #endregion        

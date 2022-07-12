@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using BuisnessLogicLayer.Services;
-
+using BuisnessLogicLayer.Models;
 
 namespace HealthyHole.Controllers
 {
@@ -28,13 +28,13 @@ namespace HealthyHole.Controllers
                 return BadRequest(
                     new { Message = "ACCESS DENIED!!!" });
             }
-            var employee = _resources.GetEmployee(id);
+            Employee employee = _resources.GetEmployee(id);
             if (employee == null)
             {
                 return BadRequest(
                     new { Message = "ACCESS DENIED!!!" });
             }
-            var message = _shift.ShiftStarts(employee);
+            string message = _shift.ShiftStarts(employee);
             if (message != null)
             {
                 return Ok(new
@@ -56,19 +56,19 @@ namespace HealthyHole.Controllers
                 return BadRequest(
                     new { Message = "ACCESS DENIED!!!" });
             }
-            var employee = _resources.GetEmployee(id);
+            Employee employee = _resources.GetEmployee(id);
             if (employee == null)
             {
                 return BadRequest(
                     new { Message = "ACCESS DENIED!!!" });
             }
-            var check = _shift.GetShift(id);
+            Shift check = _shift.GetShift(id);
             if (check.ShiftStarts.Date != DateTime.Now.Date)
             {
                 return BadRequest(
                     new {  Message = "ACCESS DENIED! YOU HAVE NOT CHECKED IN YET!" });
             }
-            var message = _shift.ShiftEnds(employee);
+            string message = _shift.ShiftEnds(employee);
             if (message != null)
             {
                 return Ok(new

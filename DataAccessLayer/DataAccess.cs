@@ -26,14 +26,14 @@ namespace DataAccessLayer
         }
         public async Task<List<string>> GetAllTitlesAsync()
         {
-            var result = await context.Employees.Select(m => m.Title).Distinct().ToListAsync();
+            List<string> result = await context.Employees.Select(m => m.Title).Distinct().ToListAsync();
             return result;
         }
         public EmployeeDAO UpdateEmployee(EmployeeDAO entity)
         {           
             context.Entry(entity).State = EntityState.Modified;
             context.SaveChanges();
-            var result = context.Employees.Find(entity.Id);
+            EmployeeDAO result = context.Employees.Find(entity.Id);
             return result;
         }
         public void DeleteEmployee(EmployeeDAO entity)
@@ -44,7 +44,7 @@ namespace DataAccessLayer
 
         public EmployeeDAO GetEmployee(int id)
         {
-            var found = context.Employees.Find(id);
+            EmployeeDAO found = context.Employees.Find(id);
             if (found != null)
             {
                   context.Entry(found).State = EntityState.Detached;
@@ -62,7 +62,7 @@ namespace DataAccessLayer
         {
             IQueryable<EmployeeDAO> group;
             group = context.Employees.Where(x=>x.Title==title).Select(grp=>grp);
-            var result = group.AsEnumerable();
+            IEnumerable<EmployeeDAO> result = group.AsEnumerable();
             return result;
         }                
     }

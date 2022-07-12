@@ -29,13 +29,13 @@ namespace DataAccessLayer
 
         public ShiftDAO GetShift(int id)
         {
-            var result = context.Shifts.OrderBy(x => x).Last(x => x.EmployeeId == id);
+            ShiftDAO result = context.Shifts.OrderBy(x => x).Last(x => x.EmployeeId == id);
             return result;
         }
 
         public async Task<ICollection<ShiftDAO>> GetAllShiftsAsync(int id)
         {
-            var result = await context.Shifts.Where(x => x.EmployeeId == id).ToListAsync();
+            List<ShiftDAO> result = await context.Shifts.Where(x => x.EmployeeId == id).ToListAsync();
             return result;
         }        
         #endregion
