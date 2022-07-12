@@ -28,8 +28,8 @@ namespace DataAccessLayer
         }
 
         public ShiftDAO GetShift(int id)
-        {
-            ShiftDAO result = context.Shifts.OrderBy(x => x).Last(x => x.EmployeeId == id);
+        {            
+            ShiftDAO result = context.Shifts.First(x => x.EmployeeId == id);
             return result;
         }
 
