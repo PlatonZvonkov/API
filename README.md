@@ -1,4 +1,4 @@
-# Deptus
+# API
 БД Лежит в папке DataBase проекта HealthyHole.
 
 Демонстрационный код.
